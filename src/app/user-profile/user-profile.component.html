@@ -1,0 +1,186 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <ng-container *ngIf="admin; else emptyData"></ng-container>
+
+          <ng-template #emptyData>
+            <mat-progress-bar mode="query"></mat-progress-bar>
+            <div class="text-center">Chargement des données. Veuillez patienter.</div>
+
+          </ng-template>
+          <h5 class="title">Mon profil</h5>
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="row">
+              <div class="col-md-5 pr-1">
+                <div class="form-group">
+                  <label>Droits (desactivé)</label>
+                  <input type="text" class="form-control" disabled="" placeholder="Abilities" value="{{abilities}}">
+                </div>
+              </div>
+              <div class="col-md-3 px-1">
+                <div class="form-group">
+                  <label>Code</label>
+                  <input type="password" class="form-control" disabled value="michael23">
+                </div>
+              </div>
+              <div class="col-md-4 pl-1">
+                <div class="form-group">
+                  <label for="email">Adresse Mail</label>
+                  <input id="email" name="email" type="email" class="form-control" placeholder="Email"
+                    value="{{admin.email}}" disabled>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label>Prenom </label>
+                  <input type="text" class="form-control" placeholder="Company" name="first_name"
+                    [(ngModel)]="admin.first_name" disabled>
+                </div>
+              </div>
+              <div class="col-md-6 pl-1">
+                <div class="form-group">
+                  <label>Nom</label>
+                  <input type="text" class="form-control" placeholder="Last Name" name="last_name"
+                    [(ngModel)]="admin.last_name" disabled>
+                </div>
+              </div>
+            </div>
+            <div class=" text-right" *ngIf="auth.getAbilitie()">
+              <button type="submit" class="btn btn-violet btn-round " (click)="open(ajout)"> <b> Ajouter un
+                  administrateur </b> &nbsp;<i class="fa fa-plus"></i></button>
+
+
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-user">
+        <div class="image">
+          <img src="../assets/img/bg5.jpg" alt="...">
+        </div>
+        <div class="card-body">
+
+          <div class="author">
+            <a>
+              <img class="avatar border-gray"
+                src="data:image/jpeg;base64,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WlYjwxte8JyHrlFVi0xrqoei1wtBD9FkXI+8W25X3We2bpqkahWMXXdl2AUFnKAgICAgICAgICAgICAgICAgICDiyCBxvJtBW3NRTROeeb2gxvPteyxPvXdct69pcWx1nvCD/k6dD+Q4lX0w6MMnFjb4aDbb2lU+PvxViXHwtdplx+DeMt2bi7Hj6dFFf+KfExT/AI/ycl/9j8HcbP8AWsLfFtFFf7k+Jj/1/k5L+ociVU21XjFa8d0IbTAj2AkfqXvx6x4aR+T4dp72SGFdnWG07tYpxLJz1zuMxJ77O82/jZcWz3t026jFWFqYwAAAAAcgNgB3WUlH0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg//2Q=="
+                alt="...">
+              <h5 class="title text-violet">{{admin.first_name}} {{admin.last_name}}</h5>
+            </a>
+            <p class="description">
+              {{admin.email}}
+            </p>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-violet btn-round " (click)="open(password)"> <b> Modifier mon mot de
+                passe
+              </b> &nbsp;<i class="fa fa-eye"></i></button>
+          </div>
+
+
+        </div>
+
+        <hr>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!------------------------------------------------------------------------ ajout d'un administrateur--------------------------------------->
+<ng-template #ajout let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h5 class="modal-title text-center">Ajout d'un administrateur !</h5>
+
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="exampleInputEmail1">&nbsp;&nbsp;&nbsp;Prenom de l'admin </label>
+      <input type="text" class="form-control" id="prenom" [(ngModel)]="first_name" name="first_name"
+        aria-describedby="nom" placeholder="Veuillez entrer le prenom" />
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1"> &nbsp;&nbsp;&nbsp; Nom de l'admin </label>
+      <input type="text" class="form-control" id="nom" [(ngModel)]="last_name" name="last_name" aria-describedby="nom"
+        placeholder="Veuillez entrer le prenom" />
+    </div>
+
+    <div class="form-group">
+      <label for="exampleInputEmail1"> &nbsp;&nbsp;&nbsp; Email de l'admin </label>
+      <input type="text" class="form-control" id="email" [(ngModel)]="email" name="email" aria-describedby="email"
+        placeholder="Veuillez entrer l'email" />
+    </div>
+    <div class="form-group">
+      <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input form-control" id="customSwitch1" [(ngModel)]="NewAbilitie"
+          name="abilitie">
+        <label class="custom-control-label" for="customSwitch1">Nommer superAdmin</label>
+      </div>
+    </div>
+
+
+
+  </div>
+  <div class="modal-footer">
+    <div class="left-side">
+      <button type="button" class="btn btn-success" (click)="create();c('Close click')"><i class="fa fa-save"></i>
+        Enregistrer</button>
+    </div>
+    <div class="divider"></div>
+    <div class="right-side">
+      <button type="" class="btn btn-danger " (click)="c('Close click')"> <i class="fa fa-times"></i> Fermer </button>
+    </div>
+  </div>
+</ng-template>
+
+<!------------------------------------------------------------------------ Modifier--------------------------------------->
+<ng-template #password let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h5 class="modal-title text-center">Modifier mon mot de passe !</h5>
+
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="exampleInputEmail1">&nbsp;&nbsp;&nbsp;Ancien mot de passe </label>
+      <input type="password" class="form-control" id="prenom" [(ngModel)]="ancien" name="ancien" aria-describedby="nom"
+        placeholder="Veuillez entrer l'ancien mot de passe" />
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1"> &nbsp;&nbsp;&nbsp; Nouveau mot passe </label>
+      <input type="password" class="form-control" id="nom" [(ngModel)]="nouveau" name="nouveau" aria-describedby="nom"
+        placeholder="Veuillez entrer le nouveau mot de passe" />
+    </div>
+
+    <div class="form-group">
+      <label for="exampleInputEmail1"> &nbsp;&nbsp;&nbsp; Confirmer le nouveau mot de passe </label>
+      <input type="password" class="form-control" id="email" aria-describedby="email"
+        placeholder="Veuillez confiormer le nouveau mot de passe" />
+    </div>
+
+
+
+
+  </div>
+  <div class="modal-footer">
+    <div class="left-side">
+      <button type="button" class="btn btn-success" (click)="update();c('Close click')"><i class="fa fa-save"></i>
+        Enregistrer</button>
+    </div>
+    <div class="divider"></div>
+    <div class="right-side">
+      <button type="" class="btn btn-danger " (click)="c('Close click')"> <i class="fa fa-times"></i> Fermer </button>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,228 @@
+<div class="panel-header panel-header-sm">
+</div>
+<ng-container *ngIf="!isload; else emptyData"></ng-container>
+
+<div class="main-content">
+  <div class="row" *ngIf="!isload">
+    <div class="col-lg-6">
+      <div class="card card-upgrade">
+        <div class="card-header">
+          <ng-container *ngIf="modeRamadan; else emptyData"></ng-container>
+
+          <ng-template #emptyData>
+            <mat-progress-bar mode="query"></mat-progress-bar>
+            <div class="text-center">Chargement des données. Veuillez patienter.</div>
+
+          </ng-template>
+          <h5 class="card-title">Gestion mode Ramadan/Carême</h5>
+          <p class="category"> Modifiez les parametres de votre application mobile ici comme vous le
+            souhaitez.</p>
+        </div>
+        <div class="card-body" *ngIf="modeRamadan">
+          <div class="table-responsive table-upgrade">
+            <table class="table">
+              <thead>
+                <th></th>
+                <th class="text-center">Details</th>
+              </thead>
+              <tbody>
+
+                <tr>
+                  <td>Mode Ramadan/Carême</td>
+                  <td class="text-center">
+                    <ng-container *ngIf="modeRamadan.value==0; else elseTemplate">
+                      <span class="badge badge-danger">
+                        Desactivé
+                      </span>
+
+                    </ng-container>
+                    <ng-template #elseTemplate>
+                      <span class="badge badge-success">Activé</span>
+
+                    </ng-template>
+
+                  </td>
+                </tr>
+
+
+
+                <tr>
+                  <td class="text-center"></td>
+
+                  <td class="text-center">
+                    <div *ngIf="auth.getAbilitie()">
+                      <button class="btn  btn-round btn-violet" (click)="cloneObject(modeRamadan);open(modifier1)"> <i
+                          class="fa fa-cog" aria-hidden="true"></i> &nbsp;
+
+
+                        Cliquez pour modifier</button>
+                    </div>
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card card-upgrade">
+        <div class="card-header">
+          <ng-container *ngIf="MaxEmprunt; else emptyData"></ng-container>
+
+          <ng-template #emptyData>
+            <mat-progress-bar mode="query"></mat-progress-bar>
+            <div class="text-center">Chargement des données. Veuillez patienter.</div>
+
+          </ng-template>
+          <h5 class="card-title">Gestion de l'emprunt</h5>
+          <p class="category"> Modifiez les parametres de votre application mobile ici comme vous le
+            souhaitez.</p>
+        </div>
+        <div class="card-body" *ngIf="MaxEmprunt">
+          <div class="table-responsive table-upgrade">
+            <table class="table">
+              <thead>
+                <th></th>
+                <th class="text-center">Details</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Montant Maximum d'emprunt</td>
+                  <td class="text-center">{{MaxEmprunt.value}} FCFA</td>
+                </tr>
+
+
+
+
+                <tr>
+                  <td class="text-center"></td>
+
+                  <td class="text-center">
+                    <div *ngIf="auth.getAbilitie()">
+
+                      <button class="btn  btn-round btn-violet" (click)="cloneObject(MaxEmprunt);open(modifier2)"> <i
+                          class="fa fa-cog" aria-hidden="true"></i> &nbsp;
+
+
+                        Cliquez pour modifier</button>
+                    </div>
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<ng-template #emptyData>
+  <div class="loading">
+    Loading&#8230;
+  </div>
+
+
+</ng-template>
+
+<!-----------------------------------------------------------------------modifier Petitdej--------------------------------------->
+
+<ng-template #modifier1 let-c="close" let-d="dismiss">
+  <form>
+    <div class="modal-header text-center">
+      <h5 class="modal-title "> Activer ou Desactiver le mode ramadan/carême !</h5>
+
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input form-control" id="customSwitch1"
+            [(ngModel)]="monClone.value" name="ramadan">
+          <label class="custom-control-label" for="customSwitch1">Activer ou desactiver</label>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <div class="left-side">
+        <button type="button" class="btn btn-success" (click)="changeParams(monClone);c('Close click')"><i
+            class="fa fa-save"></i>
+          Enregistrer</button>
+      </div>
+      <div class="divider"></div>
+      <div class="right-side">
+        <button type="" class="btn btn-danger " (click)="c('Close click')"> <i class="fa fa-times"></i> Fermer </button>
+      </div>
+    </div>
+
+  </form>
+</ng-template>
+
+<!-----------------------------------------------------------------------modifier Petitdej--------------------------------------->
+
+<ng-template #modifierJST let-c="close" let-d="dismiss">
+  <form>
+    <div class="modal-header text-center">
+      <h5 class="modal-title "> Activer ou Desactiver le mode JST!</h5>
+
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input form-control" id="customSwitch1" [(ngModel)]="monClone"
+            name="jst">
+          <label class="custom-control-label" for="customSwitch1">Activer ou desactiver</label>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <div class="left-side">
+        <button type="button" class="btn btn-success" (click)="changeJST(monClone);c('Close click')"><i
+            class="fa fa-save"></i>
+          Enregistrer</button>
+      </div>
+      <div class="divider"></div>
+      <div class="right-side">
+        <button type="" class="btn btn-danger " (click)="c('Close click')"> <i class="fa fa-times"></i> Fermer </button>
+      </div>
+    </div>
+
+  </form>
+</ng-template>
+
+<!-----------------------------------------------------------------------modifier Dejeuner--------------------------------------->
+
+<ng-template #modifier2 let-c="close" let-d="dismiss">
+  <form>
+    <div class="modal-header text-center">
+      <h5 class="modal-title "> Montant maximum d'emprunt !</h5>
+
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Veuillez choisir un montant </label>
+
+        <input min="0" max="10000" type="number" name="montant" [(ngModel)]="monClone.value" class="form-control"
+          [(ngModel)]="monClone.value">
+
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="left-side">
+        <button type="button" class="btn btn-success" (click)="changeParams(monClone);c('Close click')"><i
+            class="fa fa-save"></i>
+          Enregistrer</button>
+      </div>
+      <div class="divider"></div>
+      <div class="right-side">
+        <button type="" class="btn btn-danger " (click)="c('Close click')"> <i class="fa fa-times"></i> Fermer </button>
+      </div>
+    </div>
+
+  </form>
+</ng-template>

@@ -1,0 +1,286 @@
+<div class="panel-header panel-header-sm">
+</div>
+
+
+
+
+
+
+
+<ng-container *ngIf="!isload; else emptyData"></ng-container>
+<div class="main-content">
+
+  <div class="col-md-12" *ngIf="!isload">
+
+    <div class="card">
+
+      <div class="card-header">
+
+
+
+
+        <h4 class="card-title"> Vigils </h4>
+        <div class="input-group no-border">
+          <input type="text" value="" class="form-control" placeholder="Rechercher un vigil par son resto..."
+            [(ngModel)]="search">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <i class="now-ui-icons ui-1_zoom-bold"></i>
+            </div>
+          </div>
+        </div>
+        <div class="float-right" *ngIf="auth.getAbilitie()"> <button type="button" class="btn btn-violet btn-round "
+            (click)="open(ajout)"> <b>
+              Ajout d'un vigil </b> <i class="fa fa-plus"></i></button></div>
+
+        <br><br>
+
+
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+
+            <thead class=" text-violet">
+              <th>
+                Prenom
+              </th>
+              <th>
+                Nom
+              </th>
+              <th>
+                Resto
+              </th>
+              <th *ngIf="auth.getAbilitie()">
+                Qr Code
+              </th>
+              <th class="text-right" *ngIf="auth.getAbilitie()">
+                Actions
+              </th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let vigil of vigils.sort()">
+
+                <ng-container *ngIf="search==''">
+
+                  <td>
+                    {{vigil.first_name}}
+                  </td>
+                  <td>
+                    {{vigil.last_name}}
+                  </td>
+                  <td>
+                    {{vigil.resto}}
+                  </td>
+                  <td *ngIf="auth.getAbilitie()">
+                    <button class="btn btn-dark btn-sm" (click)="open(monqr);cloneObject(vigil)"> <i
+                        class="fa fa-qrcode"></i></button>
+
+                  </td>
+                  <td class="text-right" *ngIf="auth.getAbilitie()">
+                    <button type="button" class="btn btn-secondary btn-sm " placement="bottom" ngbTooltip="Editer"
+                      (click)="open(editer);cloneObject(vigil)"><i class="fa fa-edit"></i></button>
+
+                    &nbsp;
+
+
+                    <!--- Bouton supprimer ---------------------------------------->
+                    <button type="button" class="btn btn-danger btn-sm " placement="bottom" ngbTooltip="Supprimer"
+                      (click)="open(supprimer, 'sm');cloneObject(vigil)"><i class="fa fa-trash"></i></button>
+
+
+
+                  </td>
+                </ng-container>
+
+              </tr>
+              <tr *ngFor="let vigil of vigils">
+
+                <ng-container *ngIf="search==vigil.resto">
+
+                  <td>
+                    {{vigil.first_name}}
+                  </td>
+                  <td>
+                    {{vigil.last_name}}
+                  </td>
+                  <td>
+                    {{vigil.resto}}
+                  </td>
+                  <td *ngIf="auth.getAbilitie()">
+                    <button class="btn btn-dark btn-sm" (click)="open(monqr);cloneObject(vigil)"> <i
+                        class="fa fa-qrcode"></i></button>
+
+                  </td>
+                  <td class="text-right" *ngIf="auth.getAbilitie()">
+                    <button type="button" class="btn btn-secondary btn-sm " placement="bottom" ngbTooltip="Editer"
+                      (click)="open(editer);cloneObject(vigil)"><i class="fa fa-edit"></i></button>
+
+                    &nbsp;
+
+
+                    <!--- Bouton supprimer ---------------------------------------->
+                    <button type="button" class="btn btn-danger btn-sm " placement="bottom" ngbTooltip="Supprimer"
+                      (click)="open(supprimer, 'sm');cloneObject(vigil)"><i class="fa fa-trash"></i></button>
+
+
+
+                  </td>
+                </ng-container>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #emptyData>
+  <div class="loading">
+    Loading&#8230;
+  </div>
+
+
+</ng-template>
+
+
+
+<!------------------------------------------------------------------------ ajout d'un vigil--------------------------------------->
+<ng-template #ajout let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h5 class="modal-title text-center">Ajout d'un vigil !</h5>
+
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="exampleInputEmail1">&nbsp;&nbsp;&nbsp;Prenom du vigil </label>
+      <input type="text" class="form-control" id="nom" [(ngModel)]="first_name" name="first_name" aria-describedby="nom"
+        placeholder="Veuillez entrer le prenom" />
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1"> &nbsp;&nbsp;&nbsp; Nom vigil </label>
+      <input type="text" class="form-control" id="nom" [(ngModel)]="last_name" name="last_name" aria-describedby="nom"
+        placeholder="Veuillez entrer le prenom" />
+    </div>
+
+    <div class="form-group">
+      <label for="exampleInputEmail1"> &nbsp;&nbsp;&nbsp; Affectation </label>
+      <select [(ngModel)]="resto_id" name="resto_id" class="form-control">
+        <option value="" disabled selected> Veuillez choisir un restaurant</option>
+        <option *ngFor="let resto of restos" value="{{resto.id}}"> {{resto.name}}</option>
+
+      </select>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <div class="left-side">
+      <button type="button" class="btn btn-success" (click)="createVigil();c('Close click')"><i class="fa fa-save"></i>
+        Enregistrer</button>
+    </div>
+    <div class="divider"></div>
+    <div class="right-side">
+      <button type="" class="btn btn-danger " (click)="c('Close click')"> <i class="fa fa-times"></i> Fermer </button>
+    </div>
+  </div>
+</ng-template>
+
+
+<!---- Mon qr code -->
+<ng-template #monqr let-c="close" let-d="dismiss">
+
+
+  <div class="modal-header">
+    <h5 class="modal-title text-center">Afficher le QR Code de {{myClone.first_name}} {{myClone.last_name}}!</h5>
+
+  </div>
+  <div class="modal-body">
+    <div class="text-center">
+      <ngx-qrcode [value]="myClone.qr" id="qr" width="300" height="300"></ngx-qrcode>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="left-side">
+      <button type="button" class="btn btn-info" onclick="window.print()"><i class="fa fa-print"></i>
+        Imprimer</button>
+    </div>
+    <div class="divider"></div>
+    <div class="right-side">
+      <button type="" class="btn btn-danger " (click)="c('Close click')"> <i class="fa fa-times"></i>
+        Fermer </button>
+    </div>
+  </div>
+</ng-template>
+<!--modal supprimer-->
+<ng-template #supprimer let-c="close" let-d="dismiss">
+  <div class="modal-header justify-content-center">
+    <div class="modal-profile">
+      Suspression
+    </div>
+  </div>
+  <div class="modal-body">
+    <p>Voulez-vous vraiment supprimer ce vigil ?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-warning" (click)="removeVigil(myClone);c('Close click')"><i
+        class="fa fa-trash"></i> Oui
+    </button>
+    &nbsp;
+    <button type="button" class="btn btn-danger" (click)="c('Close click')"> <i class="fa fa-times"></i> Fermer</button>
+  </div>
+</ng-template>
+
+
+<!-- Editer d'un vigil-->
+<ng-template #editer let-c="close" let-d="dismiss">
+  <form #myForm="ngForm" class="forms-sample" [formGroup]="form" (ngSubmit)="c('Close click')">
+
+    <div class="modal-header">
+      <h5 class="modal-title text-center">Editer un vigil !</h5>
+
+    </div>
+    <div class="modal-body">
+      <input required type="hidden" class="form-control" name="id" formControlName="id" [(ngModel)]="myClone.id" />
+      <input type="hidden" class="form-control" name="update_by" formControlName="update_by"
+        [(ngModel)]="myClone.update_by" />
+      <input type="hidden" class="form-control" name="created_by" formControlName="created_by"
+        [(ngModel)]="myClone.created_by" />
+      <input type="hidden" class="form-control" name="code" formControlName="code" [(ngModel)]="myClone.code" />
+      <input type="hidden" class="form-control" name="qr" formControlName="qr" [(ngModel)]="myClone.qr" />
+
+      <div class="form-group">
+
+        <label for="exampleInputEmail1">Prenom du vigil </label>
+        <input type="text" class="form-control" id="nom" [(ngModel)]="myClone.first_name" name="first_name"
+          formControlName="first_name" aria-describedby="nom" />
+      </div>
+
+      <div class="form-group">
+
+        <label for="exampleInputEmail1">Nom du vigil </label>
+        <input type="text" class="form-control" id="nom" [(ngModel)]="myClone.last_name" name="last_name"
+          formControlName="last_name" aria-describedby="nom" />
+      </div>
+
+      <label for="exampleInputEmail1">Affectation du vigil </label>
+      <select required class="form-control" name="resto_id" id="resto" [(ngModel)]="myClone.resto_id"
+        formControlName="resto">
+        <option *ngFor="let resto of restos" value="{{resto.id}}"> {{resto.name}}</option>
+      </select>
+
+    </div>
+    <div class="modal-footer">
+      <div class="left-side">
+        <button type="button" class="btn btn-success" (click)="update(myClone);c('Close click')"><i
+            class="fa fa-save"></i> Enregistrer</button>
+      </div>
+      <div class="divider"></div>
+      <div class="right-side">
+        <button type="" class="btn btn-danger " (click)="c('Close click')"> <i class="fa fa-times"></i>
+          Fermer </button>
+      </div>
+    </div>
+  </form>
+</ng-template>

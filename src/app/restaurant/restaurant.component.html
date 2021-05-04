@@ -1,0 +1,304 @@
+<div class="panel-header panel-header-sm">
+</div>
+
+<ng-container *ngIf="!isload; else emptyData"></ng-container>
+
+<div class="main-content">
+  <div class="col-md-12" *ngIf="!isload">
+    <div class="card">
+      <div class="card-header">
+
+
+        <h4 class="card-title"> Restaurants </h4>
+
+        <div class="input-group no-border">
+          <input type="text" value="" class="form-control" placeholder="Rechercher un restaurant par le nom..."
+            [(ngModel)]="search">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <i class="now-ui-icons ui-1_zoom-bold"></i>
+            </div>
+          </div>
+        </div>
+        <div class="float-right" *ngIf="auth.getAbilitie()"> <button type="button" class="btn btn-violet btn-round "
+            (click)="open(ajout)"> <b>
+              Ajout d'un restaurant </b> <i class="fa fa-plus"></i></button></div>
+
+        <br><br>
+
+
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class=" text-violet">
+              <th>
+                Id </th>
+              <th>
+                Nom
+              </th>
+              <th>
+                Sans Tickets
+              </th>
+              <th class="text-right" *ngIf="auth.getAbilitie()">
+                Actions
+              </th>
+            </thead>
+
+            <tbody>
+
+
+
+              <tr *ngFor="let resto of restos">
+                <ng-container *ngIf="search==''">
+
+
+                  <td>
+                    {{resto.id}} </td>
+                  <td>
+                    {{resto.name}}
+                  </td>
+                  <td>
+
+                    <div (click)="open(jst1);cloneObject(resto)" style="cursor: pointer;" *ngIf="resto.no_pay==false">
+                      <span class="badge badge-danger" placement="right"
+                        ngbTooltip="cliquez pour activer ou desactiver">
+                        Desactivé
+                      </span>
+                      <ng-template #jst1 let-c="close" let-d="dismiss">
+                        <div class="modal-header justify-content-center">
+                          <div class="modal-profile">
+                            Journée(s) sans tickets </div>
+                        </div>
+                        <div class="modal-body">
+                          <p>Voulez-vous vraiment decreter une journée sans ticket pour ce restaurant ?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-warning" (click)="jst(monClone);c('Close click')"><i
+                              class="fa fa-check"></i> Oui </button>
+                          &nbsp;
+                          <button type="button" class="btn btn-danger" (click)="c('Close click')"> <i
+                              class="fa fa-times"></i> Fermer</button>
+                        </div>
+                      </ng-template>
+
+                    </div>
+                    <div (click)="open(jst1);cloneObject(resto)" style="cursor: pointer;" *ngIf="resto.no_pay==true">
+                      <span class="badge badge-success" placement="right" ngbTooltip="cliquez pour desactiver">
+                        Activé
+                      </span>
+                      <ng-template #jst1 let-c="close" let-d="dismiss">
+                        <div class="modal-header justify-content-center">
+                          <div class="modal-profile">
+                            Journée(s) sans tickets </div>
+                        </div>
+                        <div class="modal-body">
+                          <p>Voulez-vous vraiment desactiver la journée sans tickets pour ce restaurant ?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-warning" (click)="jst(monClone);c('Close click')"><i
+                              class="fa fa-check"></i> Oui </button>
+                          &nbsp;
+                          <button type="button" class="btn btn-danger" (click)="c('Close click')"> <i
+                              class="fa fa-times"></i> Fermer</button>
+                        </div>
+                      </ng-template>
+
+                    </div>
+
+                  </td>
+                  <td class="text-right" *ngIf="auth.getAbilitie()">
+                    <button type="button" class="btn btn-secondary btn-sm " placement="bottom" ngbTooltip="Editer"
+                      (click)="open(editer);cloneObject(resto)"><i class="fa fa-edit"></i></button>
+                    <!-- edition d'un restaurant-->
+                    <ng-template #editer let-c="close" let-d="dismiss">
+                      <form #myForm="ngForm" class="forms-sample" [formGroup]="form" (ngSubmit)="modal.close()">
+                        <div class="modal-header">
+                          <h5 class="modal-title text-center">Editer un restaurant !</h5>
+
+                        </div>
+                        <div class="modal-body">
+                          <input type="hidden" class="form-control" name="id" formControlName="id"
+                            [(ngModel)]="monClone.id" />
+                          <input type="hidden" class="form-control" name="code" formControlName="code"
+                            [(ngModel)]="monClone.code" />
+                          <input type="hidden" class="form-control" name="created_by" formControlName="created_by"
+                            [(ngModel)]="monClone.created_by" />
+                          <input type="hidden" class="form-control" name="update_by" formControlName="update_by"
+                            [(ngModel)]="monClone.update_by" />
+                          <div class="form-group">
+                            <label for="exampleInputEmail1">Nom du restaurant </label>
+                            <input type="text" class="form-control" name="name" formControlName="name"
+                              [(ngModel)]="monClone.name" aria-describedby="nom" placeholder="Veuillez entrer le nom" />
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <div class="left-side">
+                            <button type="button" class="btn btn-success"
+                              (click)="update(monClone);c('Close click') "><i class="fa fa-save"></i>
+                              Enregistrer</button>
+                          </div>
+                          <div class="divider"></div>
+                          <div class="right-side">
+                            <button type="" class="btn btn-danger " (click)="c('Close click')"> <i
+                                class="fa fa-times"></i> Fermer </button>
+                          </div>
+                        </div>
+                      </form>
+                    </ng-template>
+                    &nbsp;
+                    <!--- Bouton supprimer ---------------------------------------->
+                    <button type="button" class="btn btn-danger btn-sm " placement="bottom" ngbTooltip="Supprimer"
+                      (click)="open(supprimer, 'sm');cloneObject(resto)"><i class="fa fa-trash"></i></button>
+                    <ng-template #supprimer let-c="close" let-d="dismiss">
+                      <div class="modal-header justify-content-center">
+                        <div class="modal-profile">
+                          Suspression
+                        </div>
+                      </div>
+                      <div class="modal-body">
+                        <p>Voulez-vous vraiment supprimer ce restaurant ?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-warning"
+                          (click)="removeResto(monClone);c('Close click')"><i class="fa fa-trash"></i> Oui </button>
+                        &nbsp;
+                        <button type="button" class="btn btn-danger" (click)="c('Close click')"> <i
+                            class="fa fa-times"></i> Fermer</button>
+                      </div>
+                    </ng-template>
+
+
+                  </td>
+                </ng-container>
+
+
+              </tr>
+              <tr *ngFor="let resto of restos">
+                <ng-container *ngIf="search==resto.name; else erreur">
+
+
+                  <td>
+                    {{resto.code}}
+                  </td>
+                  <td>
+                    {{resto.name}}
+                  </td>
+                  <td>
+                    {{resto.id}}
+                  </td>
+                  <td class="text-right">
+                    <button type="button" class="btn btn-secondary btn-sm " placement="bottom" ngbTooltip="Editer"
+                      (click)="open(editer);cloneObject(resto)"><i class="fa fa-edit"></i></button>
+                    <!-- edition d'un restaurant-->
+                    <ng-template #editer let-c="close" let-d="dismiss">
+                      <form #myForm="ngForm" class="forms-sample" [formGroup]="form"
+                        (ngSubmit)="update(monClone); modal.close()">
+                        <div class="modal-header">
+                          <h5 class="modal-title text-center">Editer un restaurant !</h5>
+
+                        </div>
+                        <div class="modal-body">
+                          <input type="hidden" class="form-control" name="id" formControlName="id"
+                            [(ngModel)]="monClone.id" />
+                          <input type="hidden" class="form-control" name="code" formControlName="code"
+                            [(ngModel)]="monClone.code" />
+                          <input type="hidden" class="form-control" name="created_by" formControlName="created_by"
+                            [(ngModel)]="monClone.created_by" />
+                          <input type="hidden" class="form-control" name="update_by" formControlName="update_by"
+                            [(ngModel)]="monClone.update_by" />
+                          <div class="form-group">
+                            <label for="exampleInputEmail1">Nom du restaurant </label>
+                            <input type="text" class="form-control" name="name" formControlName="name"
+                              [(ngModel)]="monClone.name" aria-describedby="nom" placeholder="Veuillez entrer le nom" />
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <div class="left-side">
+                            <button type="button" class="btn btn-success"
+                              (click)="update(monClone);c('Close click') "><i class="fa fa-save"></i>
+                              Enregistrer</button>
+                          </div>
+                          <div class="divider"></div>
+                          <div class="right-side">
+                            <button type="" class="btn btn-danger " (click)="c('Close click')"> <i
+                                class="fa fa-times"></i> Fermer </button>
+                          </div>
+                        </div>
+                      </form>
+                    </ng-template>
+                    &nbsp;
+                    <!--- Bouton supprimer ---------------------------------------->
+                    <button type="button" class="btn btn-danger btn-sm " placement="bottom" ngbTooltip="Supprimer"
+                      (click)="open(supprimer, 'sm');cloneObject(resto)"><i class="fa fa-trash"></i></button>
+                    <ng-template #supprimer let-c="close" let-d="dismiss">
+                      <div class="modal-header justify-content-center">
+                        <div class="modal-profile">
+                          Suspression
+                        </div>
+                      </div>
+                      <div class="modal-body">
+                        <p>Voulez-vous vraiment supprimer ce restaurant ?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-warning"
+                          (click)="removeResto(monClone);c('Close click')"><i class="fa fa-trash"></i> Oui </button>
+                        &nbsp;
+                        <button type="button" class="btn btn-danger" (click)="c('Close click')"> <i
+                            class="fa fa-times"></i> Fermer</button>
+                      </div>
+                    </ng-template>
+
+
+                  </td>
+                </ng-container>
+
+              </tr>
+
+
+
+
+
+
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #emptyData>
+  <div class="loading">
+    Loading&#8230;
+  </div>
+
+
+</ng-template>
+<!------------------------------------------------------------------------ ajout d'un restaurant--------------------------------------->
+<ng-template #ajout let-c="close" let-d="dismiss">
+  <form>
+    <div class="modal-header">
+      <h5 class="modal-title text-center">Ajout d'un restaurant !</h5>
+
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Nom du restaurant </label>
+        <input type="text" class="form-control" [(ngModel)]="nom" name="nom" aria-describedby="nom"
+          placeholder="Veuillez entrer le nom" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="left-side">
+        <button type="button" class="btn btn-success" (click)="create();c('Close click')"><i class="fa fa-save"></i>
+          Enregistrer</button>
+      </div>
+      <div class="divider"></div>
+      <div class="right-side">
+        <button type="" class="btn btn-danger " (click)="c('Close click')"> <i class="fa fa-times"></i> Fermer </button>
+      </div>
+    </div>
+
+  </form>
+</ng-template>

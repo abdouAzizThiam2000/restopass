@@ -1,0 +1,285 @@
+<div class="panel-header panel-header-lg">
+  <canvas baseChart id="bigDashboardChart" [datasets]="lineBigDashboardChartData" [labels]="lineBigDashboardChartLabels"
+    [colors]="lineBigDashboardChartColors" [options]="lineBigDashboardChartOptions"
+    [chartType]="lineBigDashboardChartType" (chartHover)="chartHovered($event)"
+    (chartClick)="chartClicked($event)"></canvas>
+</div>
+
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card  card-tasks">
+        <div class="card-header ">
+          <ng-container *ngIf="!chargement; else emptyData"></ng-container>
+
+          <ng-template #emptyData>
+            <mat-progress-bar mode="query"></mat-progress-bar>
+            <div class="text-center">Chargement des données. Veuillez patienter.</div>
+
+          </ng-template>
+          <h5 class="card-category">Statistiques de RestoPass</h5>
+          <h4 class="card-title">Informations </h4>
+        </div>
+        <div class="card-body ">
+          <div class="table-full-width table-responsive">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" checked disabled>
+                        <span class="form-check-sign"></span>
+                      </label>
+                    </div>
+                  </td>
+                  <td class="text-left"> Nombre annuel de passages au resto : </td>
+                  <td class="td-actions text-right">
+                    <b>{{somme1}}</b> passage(s)
+                  </td>
+                </tr>
+                <br>
+                <tr>
+                  <td>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" checked disabled>
+                        <span class="form-check-sign"></span>
+                      </label>
+                    </div>
+                  </td>
+                  <td class="text-left"> Montant perdu dû aux journées sans tickets: </td>
+                  <td class="td-actions text-right">
+                    <b>{{perte}}</b> {{monnaie}}
+                  </td>
+                </tr>
+
+                <br>
+
+                <tr>
+
+                  <td>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" checked disabled>
+                        <span class="form-check-sign"></span>
+                      </label>
+                    </div>
+                  </td>
+                  <td class="text-left"> Recettes annuelles totales (Rechargement des comptes) : </td>
+                  <td class="td-actions text-right">
+                    <b>{{recetteAnnuelle}}</b> {{monnaie}}
+                </tr>
+                <br>
+
+                <tr>
+                  <td>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" checked disabled>
+                        <span class="form-check-sign"></span>
+                      </label>
+                    </div>
+                  </td>
+                  <td class="text-left"> Montant global (Petits-dejeuners vendus) : </td>
+                  <td class="td-actions text-right">
+                    <b>{{somme2}}</b> {{monnaie}}
+                  </td>
+                </tr>
+                <br>
+
+                <tr>
+                  <td>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" checked disabled>
+                        <span class="form-check-sign"></span>
+                      </label>
+                    </div>
+                  </td>
+                  <td class="text-left"> Montant global ( Repas vendus) : </td>
+                  <td class="td-actions text-right">
+                    <b>{{somme3}}</b> {{monnaie}}
+                  </td>
+                </tr>
+                <br>
+                <tr>
+                  <td>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" checked disabled>
+                        <span class="form-check-sign"></span>
+                      </label>
+                    </div>
+                  </td>
+                  <td class="text-left"> Montant global ( Diners vendus) : </td>
+                  <td class="td-actions text-right">
+                    <b>{{somme4}}</b> {{monnaie}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer ">
+          <hr>
+          <div class="stats">
+            <i class="now-ui-icons loader_refresh spin"></i>{{date | date}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="card card-chart">
+        <div class="card-header">
+          <ng-container *ngIf="!chargement; else emptyData"></ng-container>
+
+          <ng-template #emptyData>
+            <mat-progress-bar mode="query"></mat-progress-bar>
+            <div class="text-center">Chargement des données. Veuillez patienter.</div>
+
+          </ng-template>
+          <h5 class="card-category">Compteur annuel des passages au resto : Petit déjeuner</h5>
+          <h4 class="card-title">{{somme2/50}} passage(s)</h4>
+
+        </div>
+        <div class="card-body">
+          <div class="chart-area">
+            <canvas baseChart id="lineChartExample" [datasets]="lineChartData1" [labels]="lineChartLabels"
+              [colors]="lineChartColors1" [options]="lineChartOptions" [chartType]="lineChartType"
+              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="now-ui-icons arrows-1_refresh-69"></i> {{ date | date }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card card-chart">
+        <div class="card-header">
+          <ng-container *ngIf="!chargement; else emptyData"></ng-container>
+
+          <ng-template #emptyData>
+            <mat-progress-bar mode="query"></mat-progress-bar>
+            <div class="text-center">Chargement des données. Veuillez patienter.</div>
+
+          </ng-template>
+          <h5 class="card-category">Compteur annuel des passages au resto : Repas</h5>
+          <h4 class="card-title">{{somme3/100}} passage(s) </h4>
+
+        </div>
+        <div class="card-body">
+          <div class="chart-area">
+            <canvas baseChart id="lineChartExample" [datasets]="lineChartData2" [labels]="lineChartLabels"
+              [colors]="lineChartColors2" [options]="lineChartOptions" [chartType]="lineChartType"
+              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="now-ui-icons arrows-1_refresh-69"></i> {{ date | date }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+    <div class="col-lg-4">
+      <div class="card card-chart">
+        <div class="card-header">
+          <ng-container *ngIf="!chargement; else emptyData"></ng-container>
+
+          <ng-template #emptyData>
+            <mat-progress-bar mode="query"></mat-progress-bar>
+            <div class="text-center">Chargement des données. Veuillez patienter.</div>
+
+          </ng-template>
+          <h5 class="card-category">Compteur annuel des passages au resto : Dinner</h5>
+          <h4 class="card-title">{{somme4/100}} passage(s)</h4>
+
+        </div>
+        <div class="card-body">
+          <div class="chart-area">
+            <canvas baseChart id="lineChartExample" [datasets]="lineChartData3" [labels]="lineChartLabels"
+              [colors]="lineChartColors2" [options]="lineChartOptions" [chartType]="lineChartType"
+              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="now-ui-icons arrows-1_refresh-69"></i> {{ date | date }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+      <div class="card card-chart">
+        <div class="card-header">
+          <ng-container *ngIf="!chargement; else emptyData"></ng-container>
+
+          <ng-template #emptyData>
+            <mat-progress-bar mode="query"></mat-progress-bar>
+            <div class="text-center">Chargement des données. Veuillez patienter.</div>
+
+          </ng-template>
+          <h5 class="card-category">Emprunt non-remboursé</h5>
+          <h4 class="card-title">Montant total : {{emprunt}} FCFA</h4>
+
+        </div>
+        <div class="card-body">
+          <div class="chart-area">
+            <!-- <canvas id="lineChartExampleWithNumbersAndGrid"></canvas> -->
+            <canvas baseChart id="lineChartExampleWithNumbersAndGrid" [datasets]="lineChartWithNumbersAndGridData"
+              [labels]="lineChartWithNumbersAndGridLabels" [colors]="lineChartWithNumbersAndGridColors"
+              [options]="lineChartWithNumbersAndGridOptions" [chartType]="lineChartWithNumbersAndGridType"
+              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="now-ui-icons arrows-1_refresh-69"></i> {{ date | date }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+      <div class="card card-chart">
+        <div class="card-header">
+          <ng-container *ngIf="!chargement; else emptyData"></ng-container>
+
+          <ng-template #emptyData>
+            <mat-progress-bar mode="query"></mat-progress-bar>
+            <div class="text-center">Chargement des données. Veuillez patienter.</div>
+
+          </ng-template>
+          <h5 class="card-category">Ventes effectuées</h5>
+          <h4 class="card-title">Au cours de cette année</h4>
+        </div>
+        <div class="card-body">
+          <div class="chart-area">
+            <canvas baseChart id="barChartSimpleGradientsNumbers" [datasets]="lineChartGradientsNumbersData"
+              [labels]="lineChartGradientsNumbersLabels" [colors]="lineChartGradientsNumbersColors"
+              [options]="lineChartGradientsNumbersOptions" [chartType]="lineChartGradientsNumbersType"
+              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="now-ui-icons ui-2_time-alarm"></i> Chaque graphe represente les ventes au cours d'un mois.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,237 @@
+<div class="panel-header panel-header-sm">
+</div>
+
+<ng-container *ngIf="!isload; else emptyData"></ng-container>
+
+<div class="main-content">
+  <div class="row" *ngIf="!isload">
+    <div class="col-lg-4">
+      <div class="card card-upgrade">
+        <div class="card-header">
+
+
+          <h5 class="card-title text-center">Petit Déjeuner</h5>
+          <p class="category text-center"> Modifiez les parametres horaires de votre application ici.</p>
+        </div>
+        <div class="card-body">
+          <p class="text-center"> <b>
+              <h5>Heure d'ouverture : </h5>
+            </b> {{ndekki.open}}h 00 minutes
+            <br>
+            <br>
+            <br>
+
+
+            <b>
+              <h5> Heure de fermeture : </h5>
+            </b> {{ndekki.close}}h 00 minutes
+          </p>
+          <div class="text-center" *ngIf="auth.getAbilitie()">
+            <button class="btn  btn-round btn-violet" (click)="cloneObject(ndekki);open(modifier1)"> <i
+                class="fa fa-cog" aria-hidden="true"></i> &nbsp;
+
+
+              Cliquez pour modifier</button>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card card-upgrade">
+        <div class="card-header">
+
+          <h5 class="card-title text-center">Déjeuner </h5>
+          <p class="category text-center"> Modifiez les parametres horaires de votre application ici.</p>
+        </div>
+        <div class="card-body">
+          <p class="text-center"> <b>
+              <h5>Heure d'ouverture : </h5>
+            </b> {{agn.open}}h 00 minutes
+            <br>
+            <br>
+            <br>
+
+
+            <b>
+              <h5> Heure de fermeture : </h5>
+            </b> {{agn.close}}h 00 minutes
+          </p>
+          <div class="text-center" *ngIf="auth.getAbilitie()">
+            <button class="btn  btn-round btn-violet" (click)="cloneObject(agn);open(modifier2)"> <i class="fa fa-cog"
+                aria-hidden="true"></i> &nbsp;
+
+
+              Cliquez pour modifier</button>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card card-upgrade">
+        <div class="card-header">
+
+          <h5 class="card-title text-center">Diner</h5>
+          <p class="category text-center"> Modifiez les parametres horaires de votre application ici.</p>
+        </div>
+        <div class="card-body">
+          <p class="text-center"> <b>
+              <h5>Heure d'ouverture : </h5>
+            </b> {{rer.open}}h 00 minutes
+            <br>
+            <br>
+            <br>
+
+
+            <b>
+              <h5> Heure de fermeture : </h5>
+            </b> {{rer.close}}h 00 minutes
+          </p>
+          <div class="text-center" *ngIf="auth.getAbilitie()">
+            <button class="btn  btn-round btn-violet" (click)="cloneObject(rer);open(modifier3)"> <i class="fa fa-cog"
+                aria-hidden="true"></i> &nbsp;
+
+
+              Cliquez pour modifier</button>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #emptyData>
+  <div class="loading">
+    Loading&#8230;
+  </div>
+
+
+</ng-template>
+<!-----------------------------------------------------------------------modifier Petitdej--------------------------------------->
+
+<ng-template #modifier1 let-c="close" let-d="dismiss">
+  <form>
+    <div class="modal-header text-center">
+      <h5 class="modal-title "> Modifier les horaires du petit dejeuner !</h5>
+
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Heure d'ouverture du restaurant </label>
+        <select class="form-control" name="ouverture" [(ngModel)]="monClone.open">
+          <option *ngFor="let h of heure1" value="{{h}}"> {{h}}h: 00 minute</option>
+
+        </select>
+      </div>
+      <br><br>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Heure de fermeture du restaurant </label>
+        <select class="form-control" name="fermeture" [(ngModel)]="monClone.close">
+          <option disabled selected> Veuillez choisir une heure</option>
+          <option *ngFor="let h of heure1" value="{{h}}"> {{h}}h: 00 minute</option>
+
+
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="left-side">
+        <button type="button" class="btn btn-success" (click)="changeHoraire(monClone);c('Close click')"><i
+            class="fa fa-save"></i>
+          Enregistrer</button>
+      </div>
+      <div class="divider"></div>
+      <div class="right-side">
+        <button type="" class="btn btn-danger " (click)="c('Close click')"> <i class="fa fa-times"></i> Fermer </button>
+      </div>
+    </div>
+
+  </form>
+</ng-template>
+
+<!-----------------------------------------------------------------------modifier Dejeuner--------------------------------------->
+
+<ng-template #modifier2 let-c="close" let-d="dismiss">
+  <form>
+    <div class="modal-header text-center">
+      <h5 class="modal-title "> Modifier les horaires du dejeuner !</h5>
+
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Heure d'ouverture du restaurant </label>
+        <select class="form-control" name="ouverture" [(ngModel)]="monClone.open">
+          <option *ngFor="let h of heure2" value="{{h}}"> {{h}}h: 00 minute</option>
+
+        </select>
+      </div>
+      <br><br>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Heure de fermeture du restaurant </label>
+        <select class="form-control" name="fermeture" [(ngModel)]="monClone.close">
+          <option disabled selected> Veuillez choisir une heure</option>
+          <option *ngFor="let h of heure2" value="{{h}}"> {{h}}h: 00 minute</option>
+
+
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="left-side">
+        <button type="button" class="btn btn-success" (click)="changeHoraire(monClone);c('Close click')"><i
+            class="fa fa-save"></i>
+          Enregistrer</button>
+      </div>
+      <div class="divider"></div>
+      <div class="right-side">
+        <button type="" class="btn btn-danger " (click)="c('Close click')"> <i class="fa fa-times"></i> Fermer </button>
+      </div>
+    </div>
+
+  </form>
+</ng-template>
+<!-----------------------------------------------------------------------modifier du diner--------------------------------------->
+
+<ng-template #modifier3 let-c="close" let-d="dismiss">
+  <form>
+    <div class="modal-header text-center">
+      <h5 class="modal-title "> Modifier les horaires du diner !</h5>
+
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Heure d'ouverture du restaurant </label>
+        <select class="form-control" name="ouverture" [(ngModel)]="monClone.open">
+          <option *ngFor="let h of heure3" value="{{h}}"> {{h}}h: 00 minute</option>
+
+        </select>
+      </div>
+      <br><br>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Heure de fermeture du restaurant </label>
+        <select class="form-control" name="fermeture" [(ngModel)]="monClone.close">
+          <option disabled selected> Veuillez choisir une heure</option>
+          <option *ngFor="let h of heure3" value="{{h}}"> {{h}}h: 00 minute</option>
+
+
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="left-side">
+        <button type="button" class="btn btn-success" (click)="changeHoraire(monClone);c('Close click')"><i
+            class="fa fa-save"></i>
+          Enregistrer</button>
+      </div>
+      <div class="divider"></div>
+      <div class="right-side">
+        <button type="" class="btn btn-danger " (click)="c('Close click')"> <i class="fa fa-times"></i> Fermer </button>
+      </div>
+    </div>
+
+  </form>
+</ng-template>
