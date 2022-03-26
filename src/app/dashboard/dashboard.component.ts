@@ -93,8 +93,9 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     if (this.auth.isLogin() !== true) {
       this.router.navigate(['/login']);
+      return;
     }
-
+    this.load = true;
     this.admin = this.auth.getAdminFromStorage()
     this.abilities = this.admin.abilitie ? "Administateur" : "Invité";
     this.chargement;
@@ -115,8 +116,6 @@ export class DashboardComponent implements OnInit {
         data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       }
     ];
-
-
 
     this.chartColor = "#FFFFFF";
     this.canvas = document.getElementById("bigDashboardChart");
@@ -359,7 +358,7 @@ export class DashboardComponent implements OnInit {
         pointRadius: 4,
         fill: true,
         borderWidth: 2,
-        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0]
+        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       }
     ];
     this.lineChartColors1 = [
@@ -532,7 +531,6 @@ export class DashboardComponent implements OnInit {
         console.log('STAT: ', response.body);
         response.body.all.forEach(element => {
           this.somme1 += element;
-
         });
         response.body.dej.forEach(element => {
           this.somme2 += element;
